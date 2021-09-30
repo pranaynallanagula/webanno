@@ -5,7 +5,7 @@
  * regarding copyright ownership.  The Technische Universität Darmstadt 
  * licenses this file to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
- * with the License.
+ * with the License. comments are useful
  *  
  * http://www.apache.org/licenses/LICENSE-2.0
  * 
