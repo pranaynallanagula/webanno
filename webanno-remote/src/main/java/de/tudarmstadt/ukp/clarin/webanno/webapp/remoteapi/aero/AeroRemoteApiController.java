@@ -148,9 +148,9 @@ public class AeroRemoteApiController
     private static final String PROP_STATE = "state";
     private static final String PROP_USER = "user";
     private static final String PROP_TIMESTAMP = "user";
-
     private static final String FORMAT_DEFAULT = "text";
 
+    private static final String DUPLI_NF = "] not found."
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
     private @Autowired DocumentService documentService;
@@ -188,7 +188,7 @@ public class AeroRemoteApiController
     {
         User user = userRepository.get(aUserId);
         if (user == null) {
-            throw new ObjectNotFoundException("User [" + aUserId + "] not found.");
+            throw new ObjectNotFoundException("User [" + aUserId ,DUPLI_NF);
         }
         return user;
     }
@@ -205,7 +205,7 @@ public class AeroRemoteApiController
             project = projectService.getProject(aProjectId);
         }
         catch (NoResultException e) {
-            throw new ObjectNotFoundException("Project [" + aProjectId + "] not found.");
+            throw new ObjectNotFoundException("Project [" + aProjectId ,DUPLI_NF);
         }
 
         // Check for the access
@@ -225,7 +225,7 @@ public class AeroRemoteApiController
         }
         catch (NoResultException e) {
             throw new ObjectNotFoundException("Document [" + aDocumentId + "] in project ["
-                    + aProject.getId() + "] not found.");
+                    + aProject.getId() ,DUPLI_NF);
         }
     }
 
@@ -244,7 +244,7 @@ public class AeroRemoteApiController
         catch (NoResultException e) {
             throw new ObjectNotFoundException(
                     "Annotation for user [" + aUser + "] on document [" + aDocument.getId()
-                            + "] in project [" + aDocument.getProject().getId() + "] not found.");
+                            + "] in project [" + aDocument.getProject().getId() ,DUPLI_NF);
         }
     }
 
