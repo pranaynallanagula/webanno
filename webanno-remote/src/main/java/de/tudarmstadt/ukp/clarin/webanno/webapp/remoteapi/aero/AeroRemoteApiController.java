@@ -778,23 +778,25 @@ public class AeroRemoteApiController
         AnnotationDocumentState resultState = AnnotationDocumentState.IN_PROGRESS;
         if (aState.isPresent()) {
             SourceDocumentState state = parseSourceDocumentState(aState.get());
-            switch (state) {
-            case CURATION_IN_PROGRESS:
-                resultState = AnnotationDocumentState.IN_PROGRESS;
-                document.setState(state);
-                documentService.createSourceDocument(document);
-                break;
-            case CURATION_FINISHED:
-                resultState = AnnotationDocumentState.FINISHED;
-                document.setState(state);
-                documentService.createSourceDocument(document);
-                break;
-            case NEW: // fallthrough
-            case ANNOTATION_IN_PROGRESS: // fallthrough
-            case ANNOTATION_FINISHED: // fallthrough
-            default:
-                throw new IllegalObjectStateException(
-                        "State [%s] not valid when uploading a curation.", aState.get());
+            if(state!=null) {
+                switch (state) {
+                    case CURATION_IN_PROGRESS:
+                        resultState = AnnotationDocumentState.IN_PROGRESS;
+                        document.setState(state);
+                        documentService.createSourceDocument(document);
+                        break;
+                    case CURATION_FINISHED:
+                        resultState = AnnotationDocumentState.FINISHED;
+                        document.setState(state);
+                        documentService.createSourceDocument(document);
+                        break;
+                    case NEW: // fallthrough
+                    case ANNOTATION_IN_PROGRESS: // fallthrough
+                    case ANNOTATION_FINISHED: // fallthrough
+                    default:
+                        throw new IllegalObjectStateException(
+                                "State [%s] not valid when uploading a curation.", aState.get());
+                }
             }
         }
         else {
