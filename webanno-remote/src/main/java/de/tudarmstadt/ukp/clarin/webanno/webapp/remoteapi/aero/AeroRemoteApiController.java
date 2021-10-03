@@ -307,7 +307,7 @@ public class AeroRemoteApiController
         }
 
         // Create the project and initialize tags
-        LOG.info("Creating project [" + aName + "]");
+        LOG.info(String.format("Creating project ['%s']",aName) );
         Project project = new Project();
         project.setName(aName);
         project.setMode(WebAnnoConst.PROJECT_TYPE_ANNOTATION);
