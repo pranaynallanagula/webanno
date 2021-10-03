@@ -148,8 +148,8 @@ public class AeroRemoteApiController
     private static final String PROP_STATE = "state";
     private static final String PROP_USER = "user";
     private static final String PROP_TIMESTAMP = "user";
-
     private static final String FORMAT_DEFAULT = "text";
+    private static final String DUPLI_USER = "User [" ;
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
 
@@ -188,7 +188,7 @@ public class AeroRemoteApiController
     {
         User user = userRepository.get(aUserId);
         if (user == null) {
-            throw new ObjectNotFoundException("User [" + aUserId + "] not found.");
+            throw new ObjectNotFoundException(DUPLI_USER, aUserId + "] not found.");
         }
         return user;
     }
@@ -210,7 +210,7 @@ public class AeroRemoteApiController
 
         // Check for the access
         assertPermission(
-                "User [" + user.getUsername() + "] is not allowed to access project [" + aProjectId
+                DUPLI_USER, user.getUsername() + "] is not allowed to access project [" + aProjectId
                         + "]",
                 projectService.isManager(project, user) || userRepository.isAdministrator(user));
 
@@ -291,12 +291,12 @@ public class AeroRemoteApiController
         User user = getCurrentUser();
 
         // Check for the access
-        assertPermission("User [" + user.getUsername() + "] is not allowed to create projects",
+        assertPermission(DUPLI_USER, user.getUsername() + "] is not allowed to create projects",
                 userRepository.isProjectCreator(user) || userRepository.isAdministrator(user));
 
         // Check if the user can create projects for another user
         assertPermission(
-                "User [" + user.getUsername() + "] is not allowed to create projects for user ["
+                DUPLI_USER, user.getUsername() + "] is not allowed to create projects for user ["
                         + aCreator.orElse("<unspecified>") + "]",
                 userRepository.isAdministrator(user)
                         || (aCreator.isPresent() && aCreator.get().equals(user.getUsername())));
@@ -372,7 +372,7 @@ public class AeroRemoteApiController
         User user = getCurrentUser();
 
         // Check for the access
-        assertPermission("User [" + user.getUsername() + "] is not allowed to import projects",
+        assertPermission(DUPLI_USER, user.getUsername() + "] is not allowed to import projects",
                 userRepository.isAdministrator(user));
 
         Project importedProject;
