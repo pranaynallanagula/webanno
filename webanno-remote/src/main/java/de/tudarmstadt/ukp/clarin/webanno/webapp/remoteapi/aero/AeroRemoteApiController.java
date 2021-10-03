@@ -148,7 +148,7 @@ public class AeroRemoteApiController
     private static final String PROP_STATE = "state";
     private static final String PROP_USER = "user";
     private static final String PROP_TIMESTAMP = "user";
-
+    private static final String DUPLI_DOC = "] on document [";
     private static final String FORMAT_DEFAULT = "text";
 
     private final Logger LOG = LoggerFactory.getLogger(getClass());
@@ -243,7 +243,7 @@ public class AeroRemoteApiController
         }
         catch (NoResultException e) {
             throw new ObjectNotFoundException(
-                    "Annotation for user [" + aUser + "] on document [" + aDocument.getId()
+                    "Annotation for user [" + aUser , DUPLI_DOC , aDocument.getId()
                             + "] in project [" + aDocument.getProject().getId() + "] not found.");
         }
     }
@@ -701,7 +701,7 @@ public class AeroRemoteApiController
 
         if (aState.isPresent()) {
             response.addMessage(INFO, "State of annotations of user [" + aAnnotatorId
-                    + "] on document [" + document.getId() + "] set to [" + aState.get() + "]");
+                    ,DUPLI_DOC, document.getId() + "] set to [" + aState.get() + "]");
         }
 
         return ResponseEntity.created(aUcb
@@ -745,8 +745,8 @@ public class AeroRemoteApiController
         documentService.deleteAnnotationCas(anno);
 
         return ResponseEntity
-                .ok(new RResponse<>(INFO, "Annotations of user [" + aAnnotatorId + "] on document ["
-                        + aDocumentId + "] deleted from project [" + aProjectId + "]."));
+                .ok(new RResponse<>(INFO, "Annotations of user [" + aAnnotatorId ,DUPLI_DOC,
+                         aDocumentId + "] deleted from project [" + aProjectId + "]."));
     }
 
     @ApiOperation(value = "Create curation for a document in a project")
