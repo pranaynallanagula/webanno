@@ -151,7 +151,7 @@ public class AeroRemoteApiController
 
     private static final String FORMAT_DEFAULT = "text";
 
-    private final Logger LOG = LoggerFactory.getLogger(getClass());
+    private static final Logger LOG = LoggerFactory.getLogger(getClass());
 
     private @Autowired DocumentService documentService;
     private @Autowired CurationDocumentService curationService;
