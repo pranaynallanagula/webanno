@@ -140,7 +140,7 @@ public class AeroRemoteApiController
     private static final String PARAM_PROJECT_ID = "projectId";
     private static final String PARAM_ANNOTATOR_ID = "userId";
     private static final String PARAM_DOCUMENT_ID = "documentId";
-
+    private static final String DUPLI_PID = "/{pid}/" ;
     private static final String VAL_ORIGINAL = "ORIGINAL";
 
     private static final String PROP_ID = "id";
@@ -533,7 +533,7 @@ public class AeroRemoteApiController
         }
 
         return ResponseEntity
-                .created(aUcb.path(API_BASE + "/" + PROJECTS + "/{pid}/" + DOCUMENTS + "/{did}")
+                .created(aUcb.path(API_BASE + "/" + PROJECTS ,DUPLI_PID, DOCUMENTS + "/{did}")
                         .buildAndExpand(project.getId(), document.getId()).toUri())
                 .body(rDocument);
     }
@@ -705,7 +705,7 @@ public class AeroRemoteApiController
         }
 
         return ResponseEntity.created(aUcb
-                .path(API_BASE + "/" + PROJECTS + "/{pid}/" + DOCUMENTS + "/{did}/" + ANNOTATIONS
+                .path(API_BASE + "/" + PROJECTS ,DUPLI_PID, DOCUMENTS + "/{did}/" + ANNOTATIONS
                         + "/{aid}")
                 .buildAndExpand(project.getId(), document.getId(), annotator.getUsername()).toUri())
                 .body(response);
@@ -805,7 +805,7 @@ public class AeroRemoteApiController
         RResponse<RAnnotation> response = new RResponse<>(
                 new RAnnotation(WebAnnoConst.CURATION_USER, resultState, new Date()));
         return ResponseEntity.created(
-                aUcb.path(API_BASE + "/" + PROJECTS + "/{pid}/" + DOCUMENTS + "/{did}/" + CURATION)
+                aUcb.path(API_BASE + "/" + PROJECTS ,DUPLI_PID, DOCUMENTS + "/{did}/" + CURATION)
                         .buildAndExpand(project.getId(), document.getId()).toUri())
                 .body(response);
     }
