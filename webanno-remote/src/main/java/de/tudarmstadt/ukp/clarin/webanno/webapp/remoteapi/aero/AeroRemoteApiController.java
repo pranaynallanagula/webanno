@@ -140,7 +140,7 @@ public class AeroRemoteApiController
     private static final String PARAM_PROJECT_ID = "projectId";
     private static final String PARAM_ANNOTATOR_ID = "userId";
     private static final String PARAM_DOCUMENT_ID = "documentId";
-
+    private static final String DUPLI_DEL = "] deleted from project ["
     private static final String VAL_ORIGINAL = "ORIGINAL";
 
     private static final String PROP_ID = "id";
@@ -635,7 +635,7 @@ public class AeroRemoteApiController
         documentService.removeSourceDocument(doc);
 
         return ResponseEntity.ok(new RResponse<>(INFO,
-                "Document [" + aDocumentId + "] deleted from project [" + aProjectId + "]."));
+                "Document [" + aDocumentId ,DUPLI_DEL, aProjectId + "]."));
     }
 
     @ApiOperation(value = "List annotations of a document in a project")
@@ -746,7 +746,7 @@ public class AeroRemoteApiController
 
         return ResponseEntity
                 .ok(new RResponse<>(INFO, "Annotations of user [" + aAnnotatorId + "] on document ["
-                        + aDocumentId + "] deleted from project [" + aProjectId + "]."));
+                        + aDocumentId ,DUPLI_DEL, aProjectId + "]."));
     }
 
     @ApiOperation(value = "Create curation for a document in a project")
@@ -851,7 +851,7 @@ public class AeroRemoteApiController
         }
 
         return ResponseEntity.ok(new RResponse<>(INFO, "Curated annotations for document ["
-                + aDocumentId + "] deleted from project [" + aProjectId + "]."));
+                + aDocumentId ,DUPLI_DEL, aProjectId + "]."));
     }
 
     private ResponseEntity<byte[]> readAnnotation(long aProjectId, long aDocumentId,
