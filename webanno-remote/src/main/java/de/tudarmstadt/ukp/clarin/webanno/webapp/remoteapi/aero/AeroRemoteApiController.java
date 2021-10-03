@@ -505,18 +505,22 @@ public class AeroRemoteApiController
         // Set state if one was provided
         if (aState.isPresent()) {
             SourceDocumentState state = parseSourceDocumentState(aState.get());
-            switch (state) {
-            case NEW: // fallthrough
-            case ANNOTATION_IN_PROGRESS: // fallthrough
-            case ANNOTATION_FINISHED: // fallthrough
-                document.setState(state);
-                documentService.createSourceDocument(document);
-                break;
-            case CURATION_IN_PROGRESS: // fallthrough
-            case CURATION_FINISHED:
-            default:
-                throw new IllegalObjectStateException(
-                        "State [%s] not valid when uploading a document.", aState.get());
+            if(state!=null)
+            {
+                switch (state)
+                {
+                    case NEW: // fallthrough
+                    case ANNOTATION_IN_PROGRESS: // fallthrough
+                    case ANNOTATION_FINISHED: // fallthrough
+                        document.setState(state);
+                        documentService.createSourceDocument(document);
+                        break;
+                    case CURATION_IN_PROGRESS: // fallthrough
+                    case CURATION_FINISHED:
+                    default:
+                        throw new IllegalObjectStateException(
+                                "State [%s] not valid when uploading a document.", aState.get());
+                }
             }
         }
 
