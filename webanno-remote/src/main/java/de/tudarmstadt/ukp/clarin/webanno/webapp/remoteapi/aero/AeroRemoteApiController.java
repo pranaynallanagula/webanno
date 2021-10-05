@@ -376,7 +376,7 @@ public class AeroRemoteApiController
                 userRepository.isAdministrator(user));
 
         Project importedProject;
-        File tempFile = File.createTempFile("webanno-training", null);
+        File tempFile = File.createTempFile("unpredicatble-random-webanno-training", null);
         try (InputStream is = new BufferedInputStream(aFile.getInputStream());
                 OutputStream os = new FileOutputStream(tempFile);) {
             if (!ZipUtils.isZipStream(is)) {
