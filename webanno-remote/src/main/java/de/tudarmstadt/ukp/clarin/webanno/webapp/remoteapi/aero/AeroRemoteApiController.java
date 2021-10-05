@@ -936,7 +936,7 @@ public class AeroRemoteApiController
         File tmpFile = null;
         CAS annotationCas;
         try {
-            tmpFile = File.createTempFile("upload", ".bin");
+            tmpFile = File.createTempFile("upload-random", ".unpredict-bin");
             aFile.transferTo(tmpFile);
             annotationCas = importExportService.importCasFromFile(tmpFile, project, format);
         }
