@@ -37,6 +37,7 @@ import de.tudarmstadt.ukp.clarin.webanno.api.DocumentService;
 import de.tudarmstadt.ukp.clarin.webanno.model.Project;
 import de.tudarmstadt.ukp.clarin.webanno.model.SourceDocument;
 import de.tudarmstadt.ukp.clarin.webanno.support.dialog.ConfirmationDialog;
+import de.tudarmstadt.ukp.clarin.webanno.support.dialog.RenameConfirmationDialog;
 import de.tudarmstadt.ukp.clarin.webanno.support.lambda.LambdaAjaxButton;
 import de.tudarmstadt.ukp.clarin.webanno.support.lambda.LambdaModel;
 
@@ -75,8 +76,12 @@ public class DocumentListPanel
         confirmationDialog = new ConfirmationDialog("confirmationDialog");
         confirmationDialog.setTitleModel(new StringResourceModel("DeleteDialog.title", this));
         add(confirmationDialog);
+        renameConfirmationDialog = new RenameConfirmationDialog("renameConfirmationDialog");
+        renameConfirmationDialog.setTitleModel(new StringResourceModel("RenameDialog.title", this));
+        add(renameConfirmationDialog);
 
         form.add(new LambdaAjaxButton<>("delete", this::actionDelete));
+        form.add(new LambdaAjaxButton<>("rename", this::actionRename));
     }
 
     private List<SourceDocument> listSourceDocuments()
@@ -104,6 +109,38 @@ public class DocumentListPanel
                 catch (IOException e) {
                     LOG.error("Unable to delete document", e);
                     error("Unable to delete document: " + e.getMessage());
+                    _target.addChildren(getPage(), IFeedback.class);
+                }
+            }
+            selectedDocuments.getObject().clear();
+            _target.add(getPage());
+        });
+    }
+    private void actionRename(AjaxRequestTarget aTarget, Form<Void> aForm) {
+
+        if(selectedDocuments.getObject() == null || selectedDocuments.getObject().isEmpty()) {
+            error("No Documents Selected");
+            aTarget.addChildren(getPage(), IFeedback.class);
+            return;
+        }
+
+        if(selectedDocuments.getObject().size() > 1) {
+            error("Only One Document should be Selected");
+            aTarget.addChildren(getPage(), IFeedback.class);
+            return;
+        }
+
+        renameConfirmationDialog.setContentModel(new StringResourceModel("RenameDialog.text", this));
+        renameConfirmationDialog.show(aTarget);
+
+        renameConfirmationDialog.setConfirmAction((_target, rename) -> {
+            for (SourceDocument sourceDocument : selectedDocuments.getObject()){
+                try {
+                    documentService.renameSourceDocument(selectedDocuments.getObject(), rename);
+                }
+                catch (IOException e) {
+                    LOG.error("Unable to rename Document ", e);
+                    error("Unable to rename document: " + e.getMessage());
                     _target.addChildren(getPage(), IFeedback.class);
                 }
             }

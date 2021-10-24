@@ -494,7 +494,27 @@ public class DocumentServiceImpl
                     aDocument.getId(), project.getName(), project.getId());
         }
     }
+    @Override
+    @Transactional
+    public void renameSourceDocument(SourceDocument aDocument, String name) throws IOException
+    {
+        Validate.notNull(aDocument, "Source document must be specified");
+        Validate.notNull(name, "New name of the document should be specified");
 
+        File documentUri = new File(repositoryProperties.getPath().getAbsolutePath() + "/"
+                + PROJECT_FOLDER + "/" + aDocument.getProject().getId() + "/" + DOCUMENT_FOLDER
+                + "/" + aDocument.getId() + "/" + SOURCE_FOLDER);
+
+        File sourceDocFile = new File(documentUri, aDocument.getName());
+
+        entityManager.createQuery("UPDATE SourceDocument SET name = :name WHERE id = :docid AND project.id = : pid").setParameter("name", name)
+                .setParameter("docid", aDocument.getId())
+                .setParameter("pid", aDocument.getProject().getId())
+                .executeUpdate();
+
+        sourceDocFile.renameTo(name);
+        return ;
+    }
     @Override
     @Transactional
     public void removeAnnotationDocument(AnnotationDocument aAnnotationDocument)

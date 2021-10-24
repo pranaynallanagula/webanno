@@ -138,6 +138,20 @@ public interface DocumentService
     void removeSourceDocument(SourceDocument document) throws IOException;
 
     /**
+     * ROLE_ADMINs or project admins can rename source documnents from a project. renaming a source
+     * document doesn't rename an annotation document related to that source document
+     *
+     * @param document
+     *          the source document to be renamed
+     * @param name
+     *          the rename of the document
+     * @throws IOException
+     *          If the source document searched for rename is not available
+     */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER', 'ROLE_REMOTE')")
+    void renameSourceDocument(SourceDocument document, String name ) throws IOException;
+
+    /**
      * Upload a SourceDocument, obtained as Inputstream, such as from remote API Zip folder to a
      * repository directory. This way we don't need to create the file to a temporary folder
      *
